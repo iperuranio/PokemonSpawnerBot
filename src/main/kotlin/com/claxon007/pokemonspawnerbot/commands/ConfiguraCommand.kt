@@ -36,22 +36,22 @@ class ConfiguraCommand : IPokemonSpawnerCommand {
     override fun command() : CommandHandleUpdate = { bot: Bot, update: Update, list: List<String> ->
         val message = update.message
         val chat = message!!.chat
-        val chatType = chat!!.type
-        val chatID = chat!!.id
+        val chatType = chat.type
+        val chatID = chat.id
         val userSentMessage = message.from
 
         if(chatType == "private") {
             sendMessage(messageConfigura, chatID = chatID)
         } else if(chatType != "channel") {
-            if(!userSentMessage!!.isBot) {
-                if(bot.isAdmin(chatID)) { //se il bot è admin
-                    val chatMemberOfUser = Utils.getChatMember(chatID, userSentMessage.id)
+            val chatMemberOfUser = Utils.getChatMember(chatID, userSentMessage!!.id)
 
-                    if(Utils.isAdministrator(chatMemberOfUser!!)) { //se quello che fa il comando è admin
+            if(Utils.isAdministrator(chatMemberOfUser!!)) { //se quello che fa il comando è admin
+                if(!userSentMessage.isBot) {
+                    if(bot.isAdmin(chatID)) { //se il bot è admin
                         sendMessage(messageConfigura, chatID = chatID)
+                    } else {
+                        sendMessage("❌ Non sono ancora amministratore del gruppo.", chatID = chatID)
                     }
-                } else {
-                    sendMessage("❌ Non sono ancora amministratore del gruppo.", chatID = chatID)
                 }
             }
         }
