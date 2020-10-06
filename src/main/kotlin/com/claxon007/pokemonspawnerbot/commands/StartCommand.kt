@@ -15,7 +15,7 @@ class StartCommand : IPokemonSpawnerCommand {
     }
 
     private val messageSuffix = "\n" +
-            "Una volta fatto digita /configura."
+            "Una volta fatto digita /configura, il Bot avvierà il countdown dopo che avrai mandato il comando. ⌛️"
 
     private val messageGroupPrefix = "\uD83D\uDC51 Ciao e <b>grazie</b> per avermi aggiunto al tuo gruppo!" + "\n" + "\n" +
             "Prima di iniziare con la configurazione ti chiedo di nominarmi <b>amministratore</b>. \uD83D\uDEE0\n"

@@ -1,11 +1,13 @@
 package com.claxon007.pokemonspawnerbot.commands
 
 import com.claxon007.pokemonspawnerbot.PokemonSpawnerBot
+import com.claxon007.pokemonspawnerbot.timer.PokemonTask
 import com.claxon007.pokemonspawnerbot.utils.Utils
 import com.claxon007.pokemonspawnerbot.utils.Utils.isAdmin
 import com.github.kotlintelegrambot.Bot
 import com.github.kotlintelegrambot.CommandHandleUpdate
 import com.github.kotlintelegrambot.entities.Update
+import java.util.*
 
 class ConfiguraCommand : IPokemonSpawnerCommand {
     private object InstanceHandler {
@@ -16,7 +18,7 @@ class ConfiguraCommand : IPokemonSpawnerCommand {
         val instance : ConfiguraCommand by lazy { InstanceHandler.instance }
     }
 
-    private val nonAdministratorYet = ""
+    private val nonAdministratorYet = "❌ Non sono ancora amministratore del gruppo."
     private val messageConfigura = "La configurazione del bot è semplice e intuitiva. \uD83D\uDE4B\uD83C\uDFFB\u200D♂️\n" +
             "\uD83D\uDEE0 Puoi ottenere questo messaggio in ogni momento tramite il comando /configura.\n" +
             "\n" +
@@ -49,8 +51,15 @@ class ConfiguraCommand : IPokemonSpawnerCommand {
                 if(!userSentMessage.isBot) {
                     if(bot.isAdmin(chatID)) { //se il bot è admin
                         sendMessage(messageConfigura, chatID = chatID)
+
+                        PokemonSpawnerBot.instance.timers.put(chatID, PokemonSpawnerBot.instance.defaultTimer)
+
+                        val timer = Timer()
+                        val task = PokemonTask(chatID, 2)
+
+                        timer.schedule(task as TimerTask, 0, 1000)
                     } else {
-                        sendMessage("❌ Non sono ancora amministratore del gruppo.", chatID = chatID)
+                        sendMessage(nonAdministratorYet, chatID = chatID)
                     }
                 }
             }

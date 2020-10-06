@@ -15,4 +15,5 @@ compileKotlin {
 
 dependencies {
     implementation 'io.github.kotlin-telegram-bot.kotlin-telegram-bot:telegram:5.0.0'
+    compile 'org.jsoup:jsoup:1.13.1'
 }

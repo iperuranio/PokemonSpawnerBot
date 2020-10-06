@@ -1,6 +1,7 @@
 package com.claxon007.pokemonspawnerbot
 
 import com.claxon007.pokemonspawnerbot.commands.*
+import com.claxon007.pokemonspawnerbot.pokemon.Pokemon
 import com.github.kotlintelegrambot.Bot
 import com.github.kotlintelegrambot.bot
 import com.github.kotlintelegrambot.dispatch
@@ -13,6 +14,10 @@ class PokemonSpawnerBot {
         val instance : PokemonSpawnerBot = PokemonSpawnerBot()
     }
 
+    var timers : HashMap<Long, Int> = HashMap()
+    var pokemons : List<Pokemon> = ArrayList()
+
+    val defaultTimer = 60
     private val apiKey = 
     var bot : Bot? = null
     var version = "1.0.0-BETA"
