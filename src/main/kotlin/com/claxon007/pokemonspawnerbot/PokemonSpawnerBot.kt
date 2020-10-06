@@ -13,7 +13,7 @@ class PokemonSpawnerBot {
         val instance : PokemonSpawnerBot = PokemonSpawnerBot()
     }
 
-    private val apiKey = ""
+    private val apiKey = 
     var bot : Bot? = null
     var version = "1.0.0-BETA"
 

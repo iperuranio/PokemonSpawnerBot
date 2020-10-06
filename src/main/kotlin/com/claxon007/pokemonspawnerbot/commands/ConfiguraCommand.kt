@@ -2,6 +2,7 @@ package com.claxon007.pokemonspawnerbot.commands
 
 import com.claxon007.pokemonspawnerbot.PokemonSpawnerBot
 import com.claxon007.pokemonspawnerbot.utils.Utils
+import com.claxon007.pokemonspawnerbot.utils.Utils.isAdmin
 import com.github.kotlintelegrambot.Bot
 import com.github.kotlintelegrambot.CommandHandleUpdate
 import com.github.kotlintelegrambot.entities.Update
@@ -15,6 +16,7 @@ class ConfiguraCommand : IPokemonSpawnerCommand {
         val instance : ConfiguraCommand by lazy { InstanceHandler.instance }
     }
 
+    private val nonAdministratorYet = ""
     private val messageConfigura = "La configurazione del bot è semplice e intuitiva. \uD83D\uDE4B\uD83C\uDFFB\u200D♂️\n" +
             "\uD83D\uDEE0 Puoi ottenere questo messaggio in ogni momento tramite il comando /configura.\n" +
             "\n" +
@@ -42,12 +44,14 @@ class ConfiguraCommand : IPokemonSpawnerCommand {
             sendMessage(messageConfigura, chatID = chatID)
         } else if(chatType != "channel") {
             if(!userSentMessage!!.isBot) {
-                if(Utils.isAdministrator(chatID, bot.getMe().first!!.body()!!.result!!.id)) { //se il bot è admin
-                    val chatMemberOfUser =
+                if(bot.isAdmin(chatID)) { //se il bot è admin
+                    val chatMemberOfUser = Utils.getChatMember(chatID, userSentMessage.id)
 
-                        if(Utils.isAdministrator(chatMemberOfUser!!)) {
-                            sendMessage(messageConfigura, chatID = chatID)
-                        }
+                    if(Utils.isAdministrator(chatMemberOfUser!!)) { //se quello che fa il comando è admin
+                        sendMessage(messageConfigura, chatID = chatID)
+                    }
+                } else {
+                    sendMessage("❌ Non sono ancora amministratore del gruppo.", chatID = chatID)
                 }
             }
         }
