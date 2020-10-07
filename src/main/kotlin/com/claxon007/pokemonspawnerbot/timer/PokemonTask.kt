@@ -1,14 +1,15 @@
 package com.claxon007.pokemonspawnerbot.timer
 
 import com.claxon007.pokemonspawnerbot.PokemonSpawnerBot
-import com.claxon007.pokemonspawnerbot.pokemon.Pokemon
+import com.claxon007.pokemonspawnerbot.utils.Utils
 import com.github.kotlintelegrambot.entities.ParseMode
 import java.util.*
 
-class PokemonTask(var chatID: Long, var startTimer: Int = PokemonSpawnerBot.instance.defaultTimer) : TimerTask() {
-    var decrement = 0
-    var stop : Boolean = false
-    var pokemonSpawned = false
+class PokemonTask(private var chatID : Long, var startTimer : Int = PokemonSpawnerBot.instance.defaultTimer) : TimerTask() {
+    private var decrement = 0
+    private var stop : Boolean = false
+    private var pokemonSpawned = false
+    var pokemonName : String = ""
 
     init {
         resetDecrement()
@@ -34,6 +35,7 @@ class PokemonTask(var chatID: Long, var startTimer: Int = PokemonSpawnerBot.inst
 
     fun stop() {
         stop = true
+        removeFromList()
         Thread.currentThread().interrupt()
     }
 
@@ -42,14 +44,31 @@ class PokemonTask(var chatID: Long, var startTimer: Int = PokemonSpawnerBot.inst
         resetDecrement()
     }
 
+    fun removeFromList() {
+        PokemonSpawnerBot.instance.tasks.forEach { task ->
+            if(task.match(chatID)) {
+                PokemonSpawnerBot.instance.tasks.remove(task)
+            }
+        }
+    }
+
+    fun restart() {
+        setSpawnPokemon(false)
+        pokemonName = ""
+    }
+
+    fun match(chatID : Long) = chatID == this.chatID
+
     private fun spawnPokemon() {
         setSpawnPokemon(true)
 
-        val dummyPokemon = Pokemon("ditto")
+        val randomPokemon = Utils.randomPokemon()
+        pokemonName = randomPokemon.correctName.toLowerCase()
 
-        PokemonSpawnerBot.instance.bot!!.sendPhoto(chatID, dummyPokemon.image,
-            "‼️ Attenzione è spawnato <b>${dummyPokemon.correctName}</b>!\n\nUtilizza *inserire qualcosa da utilizzare* per catturarlo prima degli altri! \uD83C\uDFC6" +
-                    "\n\n<code>#${PokemonSpawnerBot.instance.stringToCheck}${dummyPokemon.correctName}</code>",
+        println(randomPokemon.image.absolutePath)
+        PokemonSpawnerBot.instance.bot!!.sendPhoto(chatID, randomPokemon.image,
+            "‼️ Attenzione è spawnato <b>${randomPokemon.correctName}</b>!\n\nUtilizza *inserire qualcosa da utilizzare* per catturarlo prima degli altri! \uD83C\uDFC6" +
+                    "\n\n<code>#${PokemonSpawnerBot.instance.stringToCheck}${randomPokemon.correctName}</code>",
             ParseMode.HTML)
     }
 

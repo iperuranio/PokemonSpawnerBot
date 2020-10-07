@@ -52,12 +52,17 @@ class ConfiguraCommand : IPokemonSpawnerCommand {
                     if(bot.isAdmin(chatID)) { //se il bot è admin
                         sendMessage(messageConfigura, chatID = chatID)
 
-                        PokemonSpawnerBot.instance.timers.put(chatID, PokemonSpawnerBot.instance.defaultTimer)
+                        if(!PokemonSpawnerBot.instance.tasks.any { task -> task.match(chatID) }) {
+                            val startTimer = PokemonSpawnerBot.instance.defaultTimer //moltiplicare per 60 per ottenere minuti
 
-                        val timer = Timer()
-                        val task = PokemonTask(chatID, 2)
+                            val timer = Timer()
+                            val task = PokemonTask(chatID, startTimer)
 
-                        timer.schedule(task as TimerTask, 0, 1000)
+                            PokemonSpawnerBot.instance.timers.put(chatID, startTimer)
+                            PokemonSpawnerBot.instance.tasks.add(task)
+
+                            timer.schedule(task as TimerTask, 0, 1000)
+                        }
                     } else {
                         sendMessage(nonAdministratorYet, chatID = chatID)
                     }

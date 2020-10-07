@@ -6,7 +6,7 @@ import org.jsoup.Jsoup
 import java.io.File
 import java.io.FileOutputStream
 
-class Pokemon(var name: String) {
+class Pokemon(name: String) {
 //    val urlPrefix = "https://pokeapi.co/api/v2/pokemon/"
 //    var pokemonURL : String = ""
 //    val stringKey = "front_default"
