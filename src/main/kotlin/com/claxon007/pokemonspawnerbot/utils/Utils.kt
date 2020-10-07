@@ -27,10 +27,12 @@ object Utils {
         }
     }
 
+    fun getBotID() : Long = PokemonSpawnerBot.instance.bot!!.getMe()!!.first!!.body()!!.result!!.id
+
     @JvmStatic
     fun getChatMember(chatID : Long, userID : Long) : ChatMember? = PokemonSpawnerBot.instance.bot!!.getChatMember(chatID, userID).first!!.body()!!.result
 
-    fun Bot.isAdmin(chatID: Long) : Boolean = Utils.isAdministrator(chatID, this.getMe().first!!.body()!!.result!!.id)
+    fun Bot.isAdmin(chatID: Long) : Boolean = isAdministrator(chatID, this.getMe().first!!.body()!!.result!!.id)
 
     fun getResponse(url : String) : String {
         val doc = Jsoup.connect(url).ignoreContentType(true).get()

@@ -6,7 +6,6 @@ import com.github.kotlintelegrambot.entities.ParseMode
 import java.util.*
 
 class PokemonTask(var chatID: Long, var startTimer: Int = PokemonSpawnerBot.instance.defaultTimer) : TimerTask() {
-
     var decrement = 0
     var stop : Boolean = false
     var pokemonSpawned = false
@@ -29,6 +28,10 @@ class PokemonTask(var chatID: Long, var startTimer: Int = PokemonSpawnerBot.inst
         decrement = startTimer
     }
 
+    fun setTemporaryStop(stop : Boolean) {
+        this.stop = stop
+    }
+
     fun stop() {
         stop = true
         Thread.currentThread().interrupt()
@@ -44,8 +47,8 @@ class PokemonTask(var chatID: Long, var startTimer: Int = PokemonSpawnerBot.inst
 
         val dummyPokemon = Pokemon("ditto")
 
-        PokemonSpawnerBot.instance.bot!!.sendPhoto(chatID, dummyPokemon.getPhotoAsFile(),
-            "‼️ Attenzione è spawnato ${dummyPokemon.correctName}!\n\nUtilizza *inserire qualcosa da utilizzare* per catturarlo prima degli altri! \uD83C\uDFC6",
+        PokemonSpawnerBot.instance.bot!!.sendPhoto(chatID, dummyPokemon.image,
+            "‼️ Attenzione è spawnato <b>${dummyPokemon.correctName}</b>!\n\nUtilizza *inserire qualcosa da utilizzare* per catturarlo prima degli altri! \uD83C\uDFC6",
             ParseMode.HTML)
     }
 
