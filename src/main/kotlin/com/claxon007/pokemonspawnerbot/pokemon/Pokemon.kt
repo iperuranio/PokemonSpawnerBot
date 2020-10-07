@@ -1,5 +1,6 @@
 package com.claxon007.pokemonspawnerbot.pokemon
 
+import com.claxon007.pokemonspawnerbot.PokemonSpawnerBot
 import com.claxon007.pokemonspawnerbot.utils.Utils
 import org.jsoup.Jsoup
 import java.io.File
@@ -10,15 +11,13 @@ class Pokemon(var name: String) {
 //    var pokemonURL : String = ""
 //    val stringKey = "front_default"
 //    var imageURL : String = ""
-    var correctName : String = ""
-    private val folder = "images"
-    private val fileName = "$folder/$name.jpg"
+    var correctName : String = name[0].toUpperCase() + name.substring(1)
+    private val fileName = "${PokemonSpawnerBot.instance.imageFolder}/$name.jpg"
     var image : File = File(fileName)
 
     init {
 //        pokemonURL = urlPrefix + name
-        correctName = name[0].toUpperCase() + name.substring(1)
-//
+        //
 //        val response = Utils.getResponse(pokemonURL)
 //        imageURL = response.split(stringKey)[1].split(",")[0].replaceFirst(":", "").replace("\"", "")
     }

@@ -48,7 +48,8 @@ class PokemonTask(var chatID: Long, var startTimer: Int = PokemonSpawnerBot.inst
         val dummyPokemon = Pokemon("ditto")
 
         PokemonSpawnerBot.instance.bot!!.sendPhoto(chatID, dummyPokemon.image,
-            "‼️ Attenzione è spawnato <b>${dummyPokemon.correctName}</b>!\n\nUtilizza *inserire qualcosa da utilizzare* per catturarlo prima degli altri! \uD83C\uDFC6",
+            "‼️ Attenzione è spawnato <b>${dummyPokemon.correctName}</b>!\n\nUtilizza *inserire qualcosa da utilizzare* per catturarlo prima degli altri! \uD83C\uDFC6" +
+                    "\n\n<code>#${PokemonSpawnerBot.instance.stringToCheck}${dummyPokemon.correctName}</code>",
             ParseMode.HTML)
     }
 
